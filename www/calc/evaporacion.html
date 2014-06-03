@@ -1,0 +1,253 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+	<style type="text/css">
+		* {
+    		font-family: sans-serif;
+    		font-size: 12px;
+		}
+
+		fieldset {
+		    margin-bottom: 30px;
+		    padding: 10px;
+		    border: 1px solid #c0c0c0;
+		    border-radius: 5px;
+		    -webkit-border-radius: 5px;
+		    -moz-border-radius: 5px;
+		}
+		
+		legend {
+			font-size:medium;
+		}
+		
+		[type=text], [type=button], textarea {
+		    margin-top: 3px;
+		    padding: 1px;
+		    border: 1px solid #000000;
+		    border-radius: 3px;
+		    -webkit-border-radius: 3px;
+		    -moz-border-radius: 3px;
+		}
+		
+		label {
+		    
+		    float: left;
+		}
+		
+		input:hover, textarea:hover,
+		input:focus, textarea:focus {
+		    background-color: #ddffdd;
+		}
+		
+		table {
+			border-width: 0px;
+			border-spacing: 0px;
+			border-style: none;
+			padding-bottom: 10px;
+		}
+		
+		table td {
+			border-width: 0px;
+			padding-left: 7px;
+		}
+		
+		div.values {
+			float: left;
+			margin-right: 0px;
+			width: 30%;
+		}
+		
+		table.result td {
+			font-weight: bold;
+			font-size: medium;
+			padding-top: 20px;
+			padding-left: 3px;
+		}
+		
+		table.result td.value {
+			font-size: medium;
+			color: red;
+			padding-left: 20px;
+		}
+		
+		td {white-space: nowrap}
+		input {white-space: nowrap}		
+		
+	</style>
+    <head>
+        <script type="text/JavaScript">
+        	/**
+			 * @author Raul Hevia Casielles
+			 */
+
+			function evaporationCalc() {
+				
+				if (!check(document.evaporationTool.density1, "Densidad inicial")) return;
+				if (!check(document.evaporationTool.volume, "Volumen inicial")) return;
+				if (!check(document.evaporationTool.timeValue, "Tiempo hervido")) return;
+				if (!check(document.evaporationTool.timeValue, "Tiempo hervido")) return;
+				
+				
+				var density1 = parseFloatEx(document.evaporationTool.density1.value);
+				var volume = parseFloatEx(document.evaporationTool.volume.value);
+				var timeValue = parseFloatEx(document.evaporationTool.timeValue.value);
+				var density2 = parseFloatEx(document.evaporationTool.density2.value);
+				
+
+				
+				if (density1.toString().indexOf(".") != -1) density1 = density1.toFixed(3).toString().replace(".","")
+     			density1 = parseFloat(density1) - 1000;
+				if (density2.toString().indexOf(".") != -1) density2 = density2.toFixed(3).toString().replace(".","")
+				density2 = parseFloat(density2) - 1000;
+				
+				var endVolume = (density1 * volume) / density2;
+				var lostVolume = volume - endVolume;
+				var lostMinute = (lostVolume / timeValue);
+				var lostHour = lostMinute * 60;
+				            
+				document.getElementById("evaporationResult").innerHTML = round(lostHour, 2)  + "  L/h";
+            document.getElementById("volumeEevaporationResult").innerHTML = round(endVolume, 1) + "L";
+			}
+			
+			function evaporationCalcClear() {
+				document.evaporationTool.density1.value = "";
+				document.evaporationTool.volume.value = "";
+				document.evaporationTool.timeValue.value = "";
+				document.evaporationTool.density2.value = "";
+				document.getElementById("evaporationResult").innerHTML = "";
+			}
+	
+			function initialCalc() {
+
+				if (!check(document.initialTool.density, "Densidad después de hervir")) return;
+				if (!check(document.initialTool.volume, "Volumen después de hervir")) return;
+				if (!check(document.initialTool.timeValue, "Tiempo hervido")) return;
+				if (!check(document.initialTool.evaporation, "Perdida de volumen en l/h")) return;
+
+				var density = parseFloatEx(document.initialTool.density.value);
+				var volume = parseFloatEx(document.initialTool.volume.value);
+				var timeValue = parseFloatEx(document.initialTool.timeValue.value);
+				var evaporation = parseFloatEx(document.initialTool.evaporation.value);
+
+				if (density.toString().indexOf(".") != -1) density = density.toFixed(3).toString().replace(".","")
+     			density = parseFloat(density) - 1000;
+
+     			var initialVolume = volume + ((evaporation * timeValue) / 60);
+     			var initialDensity = (volume * density) / initialVolume;
+
+ 				document.getElementById("densityResult").innerHTML = parseFloat(1000 + initialDensity).toFixed(0);
+ 				document.getElementById("volumeResult").innerHTML = round(initialVolume, 2) + "L";
+			}
+			
+			function initialCalcClear() {
+				document.initialTool.density.value = "";
+				document.initialTool.volume.value = "";
+				document.initialTool.timeValue.value = "";
+				document.initialTool.evaporation.value = "";
+			}
+	
+			function check(input, text)
+			{
+			    if (input.value.length == 0 || isNaN(input.value.toString().replace(",",".")))
+			    {
+			        alert("El valor de [" + text + "] no es correcto.");
+			        input.focus();    
+			        input.select();   
+			        return false;
+			    }
+			    return true;
+			}
+			     
+			function CalculateTempCorrection(temp)
+			{   
+			    return 1 - (temp + 288.9414) / (508929.2 * (temp + 68.12963)) * Math.pow(temp - 3.9863, 2);
+			}
+			    
+			function round(number, off)
+			{
+			    i=Math.pow(10,off)
+			    return (Math.round(number*i)/i).toFixed(off).replace(".", ",");
+			}
+			
+			function parseFloatEx(value)
+			{
+				return parseFloat(value.toString().replace(",","."));
+			}
+			
+			function round(number, off)
+			{
+			    i=Math.pow(10,off)
+			    return (Math.round(number*i)/i).toFixed(off).replace(".", ",");
+			}
+			
+			function getPlato(density)
+			{
+				return 260 - (260 / parseFloatEx(density));
+			}
+
+        </script>
+        <title>Calculadora Elaboración Cerveza</title>
+    </head>
+    <body>
+    	<!-- CALCULO EVAPORACION-->
+		<fieldset id=evaporationToolLink">
+    		<legend>Calcular evaporación</legend>
+         <p>El dato del volumén después de hervir no tiene en cuenta perdidas que se puedan producir en tubos, sistemas de enfriado o del mosto que se pueda quedar en la olla. Si se obtiene
+         un volumén inferior al mostrado en el cálculo deberemos tener en cuenta esto.</p>         
+    		<div class="values">
+				<form name="evaporationTool">
+					<p><nobr><input type="text" name="density1" placeholder="Ej: 1.040 o 1040" value=""/> Densidad antes de hervir</nobr> </p>
+					<p><nobr><input type="text" name="volume" placeholder="Ej: 30" value=""/> Volumen antes de hervir (litros)</nobr> </p>
+					<p><nobr><input type="text" name="timeValue" placeholder="Ej: 60" value=""/> Tiempo de hervido (minutos)</nobr> </p>
+					<p><nobr><input type="text" name="density2" placeHolder="Ej: 1.050 o 1050" value="" /> Densidad después de hervir</nobr> </p>
+				</form>
+	
+
+				<table class="result">
+					<tr>
+						<td>La perdida por evaporación es: </td>
+						<td class="value" id="evaporationResult"></td>
+					</tr>
+					<tr>
+						<td>El volumen después de hervir es: </td>
+						<td class="value" id="volumeEevaporationResult"></td>
+					</tr>               
+				</table>
+			
+				<input type="button" value="Calcular" onclick="evaporationCalc();"/>
+				<input type="button" value="Limpiar" onclick="evaporationCalcClear();" />
+			</div>
+			
+		</fieldset>
+		
+		<br/><br/>   
+		    
+    	<!-- CALCULO VOLUMEN Y DENSIDAD ANTES DE HERVIR-->
+		<fieldset id=initialDensityToolLink">
+    		<legend>Calcular volumen y densidad antes de hervir</legend>
+    		<div class="values">
+				<form name="initialTool">
+					<p><nobr><input type="text" name="density" placeholder="Ej: 1.060 o 1060" value=""/> Densidad después de hervir</nobr> </p>
+					<p><nobr><input type="text" name="volume" placeholder="Ej: 20" value=""/> Volumen después de hervir (litros)</nobr> </p>
+					<p><nobr><input type="text" name="timeValue" placeholder="Ej: 60" value=""/> Tiempo de hervido (minutos)</nobr> </p>
+					<p><nobr><input type="text" name="evaporation" placeholder="Ej: 6" value=""/> Perdida de volumen en l/h</nobr> </p>
+				</form>
+	
+
+				<table class="result">
+					<tr>
+						<td>La densidad antes de hervir deberá de ser de: </td>
+						<td class="value" id="densityResult"></td>
+					</tr>
+					<tr>
+						<td>El volumen antes de hervir deberá de ser de: </td>
+						<td class="value" id="volumeResult"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="initialCalc();"/>
+				<input type="button" value="Limpiar" onclick="initialCalcClear();" />
+			</div>
+			
+		</fieldset>
+    </body>
+</html>

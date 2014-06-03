@@ -1,0 +1,390 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+	<style type="text/css">
+		* {
+    		font-family: sans-serif;
+    		font-size: 12px;
+		}
+
+		fieldset {
+		    margin-bottom: 30px;
+		    padding: 10px;
+		    border: 1px solid #c0c0c0;
+		    border-radius: 5px;
+		    -webkit-border-radius: 5px;
+		    -moz-border-radius: 5px;
+		}
+		
+		legend {
+			font-size:medium;
+		}
+		
+		[type=text], [type=button], textarea {
+		    margin-top: 3px;
+		    padding: 1px;
+		    border: 1px solid #000000;
+		    border-radius: 3px;
+		    -webkit-border-radius: 3px;
+		    -moz-border-radius: 3px;
+		}
+		
+		label {
+		    
+		    float: left;
+		}
+		
+		input:hover, textarea:hover,
+		input:focus, textarea:focus {
+		    background-color: #ddffdd;
+		}
+		
+		table {
+			border-width: 0px;
+			border-spacing: 0px;
+			border-style: none;
+			padding-bottom: 10px;
+		}
+		
+		table td {
+			border-width: 0px;
+			padding-left: 7px;
+		}
+		
+		div.values {
+			float: left;
+			margin-right: 0px;
+			width: 30%;
+		}
+		
+		table.result td {
+			font-weight: bold;
+			font-size: medium;
+			padding-top: 20px;
+			padding-left: 3px;
+		}
+		
+		table.result td.value {
+			font-size: medium;
+			color: red;
+			padding-left: 20px;
+		}
+		
+		p.nowrap {white-space: nowrap} 
+		td {white-space: nowrap}
+		input {white-space: nowrap}		
+		
+	</style>
+    <head>
+        <script type="text/JavaScript">
+        	/**
+			 * @author Raul Hevia Casielles
+			 */
+			
+			// ****************************************************************************************************
+			
+			function primingCalc()
+			{	
+				if (!check(document.primingTool.volumeCO2, "Volúmenes de CO2 deseados")) return;
+				if (!check(document.primingTool.volume, "Volumen en litros")) return;
+				if (!check(document.primingTool.temp, "Temperatura de la cerveza")) return;	
+				
+				var volumeCO2 = parseFloatEx(document.primingTool.volumeCO2.value);
+				var volume = parseFloatEx(document.primingTool.volume.value);
+				var temp = parseFloatEx(document.primingTool.temp.value);
+				var ingredient = document.primingTool.ingredient.value;
+				
+				if (temp < 0 || temp > 30) {
+					alert("La temperatura tiene que estar entre 0ºC y 30ºC\n\nCorriga el valor");
+					return;
+				}
+
+			    var rco2 = residualCO2(temp);
+			    var gco2 = volumeCO2 - rco2;
+			    
+			    if (gco2 <= 0) {
+			    	alert("Los volúmenes de CO2 residuales ya son superiores a los volúmenes deseados.\n\nCO2 residual: " + round(rco2,1));
+			    	return;
+			    }
+
+				var label = "";
+                var result = "";
+
+				if (ingredient == "dme") {
+					label = " gr de extracto de malta en polvo.";
+					result = ((gco2 / 0.5) * volume) / (0.5 * 0.82 * 0.80);
+				} else {
+					var prate = 15.195; //Para el azucar
+					label = " gr de azúcar";
+					if (ingredient == "dextrose") {
+						prate = 17.475;
+						label = " gr de dextrosa";
+					}
+					result = prate * (volume / 3.7854) * gco2; // https://www.homebrewersassociation.org/attachments/0000/2497/Math_in_Mash_SummerZym95.pdf
+				}
+				
+				document.getElementById("primingResultValue").innerHTML = round(result, 0) + label + " (" + round(result / volume, 1) + " gr/l)";
+				
+				
+			}	
+				
+			function primingCalcClear()
+			{
+				document.primingTool.volumeCO2.value = "";
+				document.primingTool.volume.value = "";
+				document.primingTool.temp.value = "";
+			}
+			
+			function residualCO2(temp) {
+
+			    temp = temp * 1.8 + 32; //Para el calculo de la temperatura residual se usa ºF
+			    return 3.0378
+			        - 5.0062e-2 * temp
+			        + 2.6555e-4 * temp * temp;
+			}
+			
+			// ****************************************************************************************************
+			
+			function residualCacl() {
+				
+				if (!check(document.residualTool.temp, "Temperatura de la cerveza")) return;	
+				
+				var temp = parseFloatEx(document.residualTool.temp.value);
+				
+				if (temp < 0 || temp > 30) {
+					alert("La temperatura tiene que estar entre 0ºC y 30ºC\n\nCorriga el valor");
+					return;
+				}
+				
+				var rco2 = residualCO2(temp);
+				
+				document.getElementById("residualResultValue").innerHTML = parseFloat(rco2).toFixed(2);
+
+			}
+			
+			function residualCalcClear() {
+				document.residualTool.temp.value = "";
+			}
+			
+			// ****************************************************************************************************
+			
+			function volumesCalc() {
+
+				var valueType = document.volumesTool.valueType.value;
+				var label = "Presión en bares";
+				if (valueType == "volumes") label = "Volúmenes de CO2 deseados";
+
+				if (!check(document.volumesTool.valueInput, label)) return;
+				if (!check(document.volumesTool.temp, "Temperatura de la cerveza")) return;	
+				
+				var valueInput = parseFloatEx(document.volumesTool.valueInput.value);
+				var Tbeer = parseFloatEx(document.volumesTool.temp.value);
+				
+				
+			    var T = -10.73797+(2617.25/(Tbeer+273.15));				
+				var result = 0;
+
+				if (valueType == "bar") {
+					Phead = valueInput;
+					result = (Phead + 1.013) * Math.exp(T) * 10;		
+			    	result = result / 2;	
+			
+				} else {
+					Cbeer = valueInput * 2;
+			    	result = (Cbeer  / (Math.exp(T) * 10)) - 1.013;	
+			
+				} 
+
+			    label = "Volúmenes de CO2: ";
+				if (valueType == "volumes") label = "Presión en bares:";
+
+			    document.getElementById("volumesResultValue").innerHTML = parseFloat(result).toFixed(2);
+			    document.getElementById("volumesResultLabel").innerHTML = label;
+			}
+			
+			function volumesCalcClear() {
+				document.volumesTool.temp.value = "";
+				document.volumesTool.valueInput.value = "";
+				onChangeType();
+			}
+			
+			function onChangeType() {
+				var valueType = document.volumesTool.valueType.value;
+				if (valueType == "bar") {
+					document.volumesTool.valueInput.setAttribute('placeholder', "Ej: 0.5");
+				} else {
+					document.volumesTool.valueInput.setAttribute('placeholder', "Ej: 2.2");
+				}
+			}
+			
+			// ****************************************************************************************************
+			
+			function check(input, text)
+			{
+			    if (input.value.length == 0 || isNaN(input.value.toString().replace(",",".")))
+			    {
+			        alert("El valor de [" + text + "] no es correcto.");
+			        input.focus();    
+			        input.select();   
+			        return false;
+			    }
+			    return true;
+			}
+			    
+			function round(number, off)
+			{
+			    i=Math.pow(10,off)
+			    return (Math.round(number*i)/i).toFixed(off).replace(".", ",");
+			}
+			
+			function parseFloatEx(value)
+			{
+				return parseFloat(value.toString().replace(",","."));
+			}
+			
+
+
+        </script>
+        <title>Calculadora Elaboración Cerveza</title>
+    </head>
+    <body>
+		<!-- PRIMING-->
+		<fieldset id="primingToolLink">
+			<legend>Carbonatación</legend>
+		    <p>En el cálculo se tiene en cuenta los volúmenes de CO2 residuales que contiene la cerveza una vez terminada la fermentación y dada su temperatura.</p>
+			<div class="values">
+				<form name="primingTool">
+					
+					<p class="nowrap">
+						 <SELECT>
+							  <OPTION>American Amber Ale: 2.2-2.8 </OPTION>
+							  <OPTION>American Brown: 1.5-2.5 </OPTION>
+							  <OPTION>American Lager: 2.5-2.7 </OPTION>
+							  <OPTION>American Pale Ale: 2.2-2.8 </OPTION>
+							  <OPTION>American Pilsener: 2.6-2.7 </OPTION>
+							  <OPTION>American Wheat: 2.3-2.6 </OPTION>
+							  <OPTION>Bamberg Rauchbier: 2.2-2.6 </OPTION>
+							  <OPTION>Barley Wine: 1.3-2.3 </OPTION>
+							  <OPTION>Belgian Dubbel: 1.9-2.4 </OPTION>
+							  <OPTION>Belgian Fruit Lambic: 2.6-4.5 </OPTION>
+							  <OPTION>Belgian Lambic: 3.0-4.5 </OPTION>
+							  <OPTION>Belgian Ale: 1.9-2.5 </OPTION>
+							  <OPTION>Belgian Tripel: 1.9-2.4 </OPTION>
+							  <OPTION>Belgian White (Wit): 2.1-2.6 </OPTION>
+							  <OPTION>Berliner Weisse: 3.5 </OPTION>
+							  <OPTION>Bock: 2.2-2.7 </OPTION>
+							  <OPTION>Bohemian Pilsener: 2.3-2.5 </OPTION>
+							  <OPTION>California Common: 2.4-2.8 </OPTION>
+							  <OPTION>Cream Ale: 2.6-2.7 </OPTION>
+							  <OPTION>Doppelbock: 2.3-2.6 </OPTION>
+							  <OPTION>Dortmunder Export: 2.6 </OPTION>
+							  <OPTION>Dunkelweizen: 2.7-4.5 </OPTION>
+							  <OPTION>D&uuml;sseldorf Altbier: 2.2-3.1 </OPTION>
+							  <OPTION>Eisbock: 2.4 </OPTION>
+							  <OPTION>English Bitter: 0.8-1.3 </OPTION>
+							  <OPTION>English Brown: 1.5-2.3 </OPTION>
+							  <OPTION>English Mild: 1.3-2.0 </OPTION>
+							  <OPTION>English Old/Strong Ale: 1.5-2.3 </OPTION>
+							  <OPTION>English Pale Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Flanders Brown: 1.9-2.5 </OPTION>
+							  <OPTION>Foreign-Style Stout: 2.3-2.6 </OPTION>
+							  <OPTION>German Pilsener: 2.5 </OPTION>
+							  <OPTION>Helles Bock: 2.2-2.7 </OPTION>
+							  <OPTION>Imperial Stout: 1.5-2.3 </OPTION>
+							  <OPTION>India Pale Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Irish Dry Stout: 1.6-2.0 </OPTION>
+							  <OPTION>K&ouml;lsch: 2.4-2.7 </OPTION>
+							  <OPTION>Maibock: 2.2-2.7 </OPTION>
+							  <OPTION>M&auml;rzen/Oktoberfest: 2.6-2.7 </OPTION>
+							  <OPTION>M&uuml;nchner Helles: 2.3-2.7 </OPTION>
+							  <OPTION>Munich Dunkel: 2.2-2.7 </OPTION>
+							  <OPTION>Oatmeal Stout: ? </OPTION>
+							  <OPTION>Oud Bruin: 1.9-2.5 </OPTION>
+							  <OPTION>Porter: 1.7-2.5 </OPTION>
+							  <OPTION>Schwarzbier: 2.2-2.6 </OPTION>
+							  <OPTION>Scottish Ale: 0.8-1.3 </OPTION>
+							  <OPTION>Strong Scotch Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Sweet Stout: 2.0-2.4 </OPTION>
+							  <OPTION>Vienna: 2.4-2.6 </OPTION>
+							  <OPTION>Weizen/Weissbier: 2.7-4.5 </OPTION>
+							  <OPTION>Weizenbock: 2.7-4.7 </OPTION>
+						</SELECT>
+	                	Referencia de estilos.
+					</p>
+					
+					<p class="nowrap">
+						<select name="ingredient" id="ingredient">
+							<option value="sugar">Azúcar</option>
+							<option value="dextrose">Dextrosa</option>
+							<option value="dme">Extracto de malta en polvo</option>
+						</select>
+						Ingrediente para la carbonatación
+					</p>
+					<p class="nowrap"><input type="text" value="" name="volumeCO2" placeholder="Ej: 2.2"/> Volúmenes de CO2 deseados</p>
+					<p class="nowrap"><input type="text" value="" name="volume" placeholder="Ej: 20"/> Volumen en litros</p>
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 18"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Añadir: </td>
+						<td class="value" id="primingResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="primingCalc();"/>
+				<input type="button" value="Limpiar" onclick="primingCalcClear();" />
+			</div>
+		</fieldset>
+
+		<!-- CO2 Residual-->
+		<fieldset id="primingToolLink">
+			<legend>CO2 Residual al finalizar la fermentación</legend>
+			<div class="values">
+				<form name="residualTool">
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 18"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Volúmenes de CO2 residuales: </td>
+						<td class="value" id="residualResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="residualCacl();"/>
+				<input type="button" value="Limpiar" onclick="residualCalcClear();" />
+			</div>
+		</fieldset> 
+		
+		<!-- Volumenes de CO2-->
+		<fieldset id="primingToolLink">
+			<legend>Volúmenes de CO2</legend>
+			<p>Nos servirá tanto para conocer cuantos volúmenes de CO2 tiene nuestra cerveza conociendo presión y temperatura, como para conocer a que presión debe quedar la cerveza para conseguir unos volúmenes de CO2 estando a una temperatura.</p>
+			<div class="values">
+				<form name="volumesTool">
+					<p class="nowrap">
+						<input type="text" value="" name="valueInput" placeholder="Ej: 0.5" />
+						<select id="valueType" onchange="onChangeType()">
+							<option value="bar">Presión en bares</option>
+							<option value="volumes">Volúmenes de CO2 deseados</option>
+						</select>
+					</p>
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 4"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td id="volumesResultLabel">&nbsp;</td>
+						<td class="value" id="volumesResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="volumesCalc();"/>
+				<input type="button" value="Limpiar" onclick="volumesCalcClear();" />
+			</div>
+		</fieldset> 
+    </body>
+</html>

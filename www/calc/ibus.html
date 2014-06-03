@@ -1,0 +1,325 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+	<style type="text/css">
+		* {
+    		font-family: sans-serif;
+    		font-size: 12px;
+    		margin-left: 2px;
+		}
+
+		fieldset {
+		    margin-bottom: 30px;
+		    padding: 10px;
+		    border: 1px solid #c0c0c0;
+		    border-radius: 5px;
+		    -webkit-border-radius: 5px;
+		    -moz-border-radius: 5px;
+		}
+		
+		legend {
+			font-size:medium;
+		}
+		
+		[type=text], [type=button], textarea {
+		    margin-top: 3px;
+		    padding: 1px;
+		    border: 1px solid #000000;
+		    border-radius: 3px;
+		    -webkit-border-radius: 3px;
+		    -moz-border-radius: 3px;
+		}
+		
+		label {
+		    
+		    float: left;
+		}
+		
+		input:hover, textarea:hover,
+		input:focus, textarea:focus {
+		    background-color: #ddffdd;
+		}
+		
+		table {
+			border-width: 0px;
+			border-spacing: 0px;
+			border-style: none;
+			padding-bottom: 10px;
+			
+		}
+		
+		table td {
+			border-width: 0px;
+			padding-left: 7px;
+		}
+		
+		div.values {
+			float: left;
+			margin-right: 0px;
+			width: 30%;
+		}
+		
+		table.result td {
+			font-weight: bold;
+			font-size: medium;
+			padding-top: 20px;
+			padding-left: 10px;
+		}
+		
+		table.result td.value {
+			font-size: medium;
+			color: red;
+		}
+		
+		input.data {
+			margin-left:8px;
+		}
+		
+		input.option {
+			background-color: #FFFFCC;
+		}
+
+	
+		td {white-space: nowrap}
+		input {white-space: nowrap}		
+		
+	</style>
+    <head>
+        <script type="text/JavaScript">
+        	/**
+			 * @author Raul Hevia Casielles
+			 */  
+			function populateHopSeleccion()
+			{	
+				var options = ["Flor","1",
+				               "Pellets", "1.10"];
+				
+				for (var i = 0; i < (options.length / 2); i++)
+				{
+					document.bitterTool.hop1.options[i] = new Option(options[i * 2], options[(i*2) + 1]);
+					document.bitterTool.hop2.options[i] = new Option(options[i * 2], options[(i*2) + 1]);
+					document.bitterTool.hop3.options[i] = new Option(options[i * 2], options[(i*2) + 1]);
+					document.bitterTool.hop4.options[i] = new Option(options[i * 2], options[(i*2) + 1]);
+					document.bitterTool.hop5.options[i] = new Option(options[i * 2], options[(i*2) + 1]);
+				}
+			}
+			
+			
+			function calcBitter() {
+
+				var totalIbu = 0;
+
+				checkNumber(document.bitterTool.hydrometer);
+				checkNumber(document.bitterTool.volume);
+
+				if (!check(document.bitterTool.hydrometer, "Lectura densidad original")) return;
+				if (!check(document.bitterTool.volume, "Volumen en litros finales")) return;
+				var volume = document.bitterTool.volume.value;
+				for (var index = 1; index < 6; index++) {
+				
+					var U = calcUtilization(index);
+
+					checkNumber(document.bitterTool.elements["alpha" + index]);
+					checkNumber(document.bitterTool.elements["weight" + index]);
+					checkNumber(document.bitterTool.elements["ibu" + index]);
+
+					var alpha = document.bitterTool.elements["alpha" + index].value;
+					var weight = document.bitterTool.elements["weight" + index].value;
+					var ibu = document.bitterTool.elements["ibu" + index].value;
+				
+					if (alpha.length != 0 && (weight.length != 0 || ibu.length != 0) && U > 0) {
+						if (weight.length != 0) {
+							ibu = U * (weight * (alpha / 100) * 1000) / volume;
+							document.bitterTool.elements["ibu" + index].value = round(ibu,1);
+						} else {
+							weight = (ibu * volume) / (U * (alpha / 100) * 1000);
+							document.bitterTool.elements["weight" + index].value = round(weight,1);
+						}
+					} else {
+						ibu = "";
+						document.bitterTool.elements["ibu" + index].value = ibu;
+					}
+
+					if (ibu.length != 0) {
+						totalIbu = parseFloat(totalIbu) + parseFloat(ibu);
+					} 
+				}
+				
+				document.getElementById("bitterResult").innerHTML = round(totalIbu,1);
+			}
+			
+			function clearCalcBitter() {
+				document.bitterTool.hydrometer.value = "";
+				document.bitterTool.volume.value = "";
+				
+				for (var i = 1; i < 6; i++) {
+					document.bitterTool.elements["alpha" + i].value = "";
+					document.bitterTool.elements["weight" + i].value = "";
+					document.bitterTool.elements["time" + i].value = "";
+					document.bitterTool.elements["ibu" + i].value = "";
+				}
+				
+				document.getElementById("bitterResult").innerHTML = "";
+			}
+			
+			
+			function calcUtilization(index) {
+				
+				var hydrometer = parseFloatEx(document.bitterTool.hydrometer.value);
+				if (hydrometer.toString().indexOf('.') == -1) hydrometer = hydrometer / 1000;
+				checkNumber(document.bitterTool.elements["time" + index]);
+				var time = document.bitterTool.elements["time" + index].value;
+				
+				if (time.length == 0 || parseFloat(time) == 0) return 0; //Si no hay tiempo no habrá cálculo de IBU's
+				time = parseFloatEx(time);
+		
+				var fg = 1.65 * Math.pow(0.000125, hydrometer - 1);
+				
+				var ft = (1 - Math.exp(-0.04 * time)) / 4.15;
+				
+				var U = (fg * ft) * parseFloat(document.bitterTool.elements["hop" + index].value);
+				
+				return U;
+                
+			}
+			
+			
+			
+			function check(input, text)
+			{
+			    if (input.value.length == 0 || isNaN(input.value.toString().replace(",",".")))
+			    {
+			        alert("El valor de [" + text + "] no es correcto.");
+			        input.focus();    
+			        input.select();   
+			        return false;
+			    }
+			    return true;
+			}
+			    
+			function round(number, off)
+			{
+			    i=Math.pow(10,off)
+			    return (Math.round(number*i)/i).toFixed(off);
+			}
+			
+			function parseFloatEx(value)
+			{
+				return parseFloat(value.toString().replace(",","."));
+			}
+			
+			function checkNumber(input) {
+				input.value = parseFloatEx(input.value);
+				if(input.value == null ||          
+				   input.value.length == 0 ||
+				   input.value == "NaN" ||
+				   input.value <= 0) {
+				        input.value = "";
+				}
+				//calcBitter();
+			}
+
+			function checkAlpha(input) {
+				input.value = parseFloatEx(input.value);
+				if(input.value == null ||          
+				   input.value.length == 0 ||
+				   input.value == "NaN" ||
+				   input.value <= 0 || 
+				   input.value > 100) {
+				        input.value = "";
+				}
+				//calcBitter();
+			}
+
+
+        </script>
+        <title>Calculadora Elaboración Cerveza</title>
+    </head>
+    <body onload="populateHopSeleccion()">
+    	<!-- IBU's -->
+    	<fieldset id="bitterToolLink">
+    		<legend>IBUs</legend>
+ 
+    			<p>Para el cáculo de los IBUs se usa la fórmula de <a href="http://realbeer.com/hops/">Glenn Tinseth</a>. Para cada lúpulo se deberá de rellenar obligatoriamente el valor
+    				de alfa-acidos y el tiempo de ebullición. Después si rellenamos el peso en gramos al realizar el cálculo nos dara los IBUs que aporta, si rellenamos los IBUs que queremos
+    				obtener entonces nos dará los gramos de lúpulo que debemos usar.</p>
+    				
+    		<div class="values">
+	    		<form name="bitterTool">
+	    			<table>
+	    				<tr>
+	    					<td></td>
+	    					<td>Tipo lúpulo:</td>
+	    					<td>Alfa-acidos (%)</td>
+	    					<td>Peso (gr)</td>
+	    					<td>Tiempo (minutos)</td>
+	    					<td>IBUs</td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 1</td>
+	    					<td>
+                       			 <select name = "hop1"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha1" charset="0123456789.," value="" style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight1" class="option" charset="0123456789,." value="" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time1" charset="0123456789" value="" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu1" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 2</td>
+	    					<td>
+                       			 <select name = "hop2"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha2" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight2" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time2" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu2" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 3</td>
+	    					<td>
+                       			 <select name = "hop3"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha3" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight3" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time3" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu3" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 4</td>
+	    					<td>
+                       			 <select name = "hop4"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha4" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight4" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time4" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu4" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 5</td>
+	    					<td>
+                       			 <select name = "hop5"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha5" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight5" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time5" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu5" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    			</table>
+					<p><nobr><input class="data" type="text" value="" name="hydrometer" placeholder="Ej: 1.060 o 1060" onkeypress="if (event.keyCode == 13) calcBitter();"/> Lectura densidad inicial.</nobr> </p>
+					<p><nobr><input class="data" type="text" value="" name="volume" placeholder="Ej: 20" onkeypress="if (event.keyCode == 13) calcBitter();"/> Volumen en litros.</nobr> </p>
+	    		</form>
+	    		
+
+				<table class="result">
+					<tr>
+						<td>IBUs totales: </td>
+						<td class="value" id="bitterResult"></td>
+					</tr>
+				</table>
+			
+				<input class="data" type="button" value="Calcular" onclick="calcBitter();"/>
+				<input class="data" type="button" value="Limpiar" onclick="clearCalcBitter();" />
+			</div>
+    	</fieldset>
+    </body>
+</html>
