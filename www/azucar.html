@@ -1,0 +1,35 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+   <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/azucar.js"></script>
+   </head>
+    <body>
+		<!-- ADICCION DE AZUCAR -->
+		<ons-page class="center">
+  <ons-scroller class="center">
+		<fieldset id="sugarToolLink">
+			<legend>Cantidad de azucar para conseguir una densidad específica</legend>
+			<div class="values">
+				<form name="sugarTool">
+					<p><input type="text" name="DO" placeholder="Ej: 1.042 o 1042" onkeypress="if (event.keyCode == 13) sugarCalc();"/> Densidad actual</p>
+					<p><input type="text" name="volume" placeholder="Ej: 20" onkeypress="if (event.keyCode == 13) sugarCalc();"/> Volumen en litros</p>
+					<p><input type="text" name="DF" placeholder="Ej: 1.052 o 1052" onkeypress="if (event.keyCode == 13) sugarCalc();"/> Densidad objetivo</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Añadir azucar: </td>
+						<td class="value" id="sugarCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="sugarCalc();"/>
+				<input type="button" value="Limpiar" onclick="sugarCalcClear();" />
+			</div>
+		</fieldset> 
+		</ons-scroller>
+</ons-page>
+    </body>
+</html>

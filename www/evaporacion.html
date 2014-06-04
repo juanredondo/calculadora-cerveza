@@ -1,0 +1,74 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+    <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/evaporacion.js"></script>
+    </head>
+    <body>
+		<ons-page class="center">
+  <ons-scroller class="center">
+    	<!-- CALCULO EVAPORACION-->
+		<fieldset id=evaporationToolLink">
+    		<legend>Calcular evaporación</legend>
+         <p>El dato del volumén después de hervir no tiene en cuenta perdidas que se puedan producir en tubos, sistemas de enfriado o del mosto que se pueda quedar en la olla. Si se obtiene
+         un volumén inferior al mostrado en el cálculo deberemos tener en cuenta esto.</p>         
+    		<div class="values">
+				<form name="evaporationTool">
+					<p><nobr><input type="text" name="density1" placeholder="Ej: 1.040 o 1040" value=""/> Densidad antes de hervir</nobr> </p>
+					<p><nobr><input type="text" name="volume" placeholder="Ej: 30" value=""/> Volumen antes de hervir (litros)</nobr> </p>
+					<p><nobr><input type="text" name="timeValue" placeholder="Ej: 60" value=""/> Tiempo de hervido (minutos)</nobr> </p>
+					<p><nobr><input type="text" name="density2" placeHolder="Ej: 1.050 o 1050" value="" /> Densidad después de hervir</nobr> </p>
+				</form>
+	
+
+				<table class="result">
+					<tr>
+						<td>La perdida por evaporación es: </td>
+						<td class="value" id="evaporationResult"></td>
+					</tr>
+					<tr>
+						<td>El volumen después de hervir es: </td>
+						<td class="value" id="volumeEevaporationResult"></td>
+					</tr>               
+				</table>
+			
+				<input type="button" value="Calcular" onclick="evaporationCalc();"/>
+				<input type="button" value="Limpiar" onclick="evaporationCalcClear();" />
+			</div>
+			
+		</fieldset>
+		
+		<br/><br/>   
+		    
+    	<!-- CALCULO VOLUMEN Y DENSIDAD ANTES DE HERVIR-->
+		<fieldset id=initialDensityToolLink">
+    		<legend>Calcular volumen y densidad antes de hervir</legend>
+    		<div class="values">
+				<form name="initialTool">
+					<p><nobr><input type="text" name="density" placeholder="Ej: 1.060 o 1060" value=""/> Densidad después de hervir</nobr> </p>
+					<p><nobr><input type="text" name="volume" placeholder="Ej: 20" value=""/> Volumen después de hervir (litros)</nobr> </p>
+					<p><nobr><input type="text" name="timeValue" placeholder="Ej: 60" value=""/> Tiempo de hervido (minutos)</nobr> </p>
+					<p><nobr><input type="text" name="evaporation" placeholder="Ej: 6" value=""/> Perdida de volumen en l/h</nobr> </p>
+				</form>
+	
+
+				<table class="result">
+					<tr>
+						<td>La densidad antes de hervir deberá de ser de: </td>
+						<td class="value" id="densityResult"></td>
+					</tr>
+					<tr>
+						<td>El volumen antes de hervir deberá de ser de: </td>
+						<td class="value" id="volumeResult"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="initialCalc();"/>
+				<input type="button" value="Limpiar" onclick="initialCalcClear();" />
+			</div>
+			
+		</fieldset>
+		</ons-scroller>
+</ons-page>
+    </body>
+</html>

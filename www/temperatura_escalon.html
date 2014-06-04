@@ -1,0 +1,37 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+    <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/temperatura_escalon.js"></script>
+    </head>
+    <body>
+	<ons-page class="center">
+  <ons-scroller class="center">
+		<!-- TEMPERATURA DE AGUA PARA EL ESCALON -->
+		<fieldset id="restToolLink">
+			<legend>Temperatura del agua para realizar escalón en el macerado</legend>
+			<div class="values">
+				<form name="restTool">
+					<p><nobr><input type="text" name="weight" placeholder="Ej: 5" onkeypress="if (event.keyCode == 13) restCalc();"/> Peso del grano en Kg</nobr> </p>
+					<p><nobr><input type="text" name="thick" placeholder="Ej: 3" onkeypress="if (event.keyCode == 13) restCalc();"/> Litros de agua por Kg de grano</nobr> </p>
+					<p><nobr><input type="text" name="curtemp" placeholder="Ej: 50" onkeypress="if (event.keyCode == 13) restCalc();"/> Temperatura actual (ºC)</nobr> </p>
+					<p><nobr><input type="text" name="tartemp" placeholder="Ej: 60" onkeypress="if (event.keyCode == 13) restCalc();"/> Temperatura objetivo (ºC)</nobr> </p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td><nobr>Litros de agua hirviendo (100ºC) que se deben añadir: </nobr></td>
+						<td class="value" id="restCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="restCalc();"/>
+				<input type="button" value="Limpiar" onclick="restCalcClear();" />
+			</div>
+			
+		</fieldset> 
+			</ons-scroller>
+</ons-page>
+    </body>
+</html>

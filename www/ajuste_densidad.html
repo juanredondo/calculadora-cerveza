@@ -1,0 +1,39 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+  <head>
+        <title>Calculadora Cerveza</title>
+		<script src="js/ajuste_densidad.js"></script>
+    </head>
+    <body>
+		<!-- ADICCION DE AZUCAR -->
+		<fieldset id="sugarToolLink">
+			<legend>Ajuste de densidad usando azúcar o extractos</legend>
+			<div class="values">
+				<form name="densityTool">
+					<p>
+						Ingrediente:
+						<select name = "ingredient">
+                           <option value="sugar">Azúcar</option>
+                           <option value="dme">Extracto en polvo</option>
+                           <option value="lme">Extracto líquido</option>                         
+                        </select>
+					</p>
+					<p><input type="text" name="DO" placeholder="Ej: 1.042 o 1042" onkeypress="if (event.keyCode == 13) densityCalc();"/> Densidad actual</p>
+					<p><input type="text" name="volume" placeholder="Ej: 20" onkeypress="if (event.keyCode == 13) densityCalc();"/> Volumen en litros</p>
+					<p><input type="text" name="DF" placeholder="Ej: 1.052 o 1052" onkeypress="if (event.keyCode == 13) densityCalc();"/> Densidad objetivo</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td id="labelValue"></td>
+						<td class="value" id="calcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="densityCalc();"/>
+				<input type="button" value="Limpiar" onclick="densityCalcClear();" />
+			</div>
+		</fieldset> 
+    </body>
+</html>

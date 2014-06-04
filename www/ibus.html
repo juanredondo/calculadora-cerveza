@@ -1,0 +1,99 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+	<head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/ibus.js"></script>
+    </head>
+    <body onload="populateHopSeleccion()">
+	<ons-page class="center">
+  <ons-scroller class="center">
+    	<!-- IBU's -->
+    	<fieldset id="bitterToolLink">
+    		<legend>IBUs</legend>
+ 
+    			<p>Para el cáculo de los IBUs se usa la fórmula de <a href="http://realbeer.com/hops/">Glenn Tinseth</a>. Para cada lúpulo se deberá de rellenar obligatoriamente el valor
+    				de alfa-acidos y el tiempo de ebullición. Después si rellenamos el peso en gramos al realizar el cálculo nos dara los IBUs que aporta, si rellenamos los IBUs que queremos
+    				obtener entonces nos dará los gramos de lúpulo que debemos usar.</p>
+    				
+    		<div class="values">
+	    		<form name="bitterTool">
+	    			<table>
+	    				<tr>
+	    					<td></td>
+	    					<td>Tipo lúpulo:</td>
+	    					<td>Alfa-acidos (%)</td>
+	    					<td>Peso (gr)</td>
+	    					<td>Tiempo (minutos)</td>
+	    					<td>IBUs</td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 1</td>
+	    					<td>
+                       			 <select name = "hop1"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha1" charset="0123456789.," value="" style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight1" class="option" charset="0123456789,." value="" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time1" charset="0123456789" value="" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu1" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 2</td>
+	    					<td>
+                       			 <select name = "hop2"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha2" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight2" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time2" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu2" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 3</td>
+	    					<td>
+                       			 <select name = "hop3"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha3" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight3" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time3" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu3" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 4</td>
+	    					<td>
+                       			 <select name = "hop4"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha4" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight4" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time4" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu4" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Lúpulo 5</td>
+	    					<td>
+                       			 <select name = "hop5"></select>
+                     		</td>
+	    					<td><input type="text" name="alpha5" charset="0123456789.," style="width: 50px" onChange=checkAlpha(this) /></td>
+	    					<td><input type="text" name="weight5" class="option" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="time5" charset="0123456789" style="width: 50px" onChange=checkNumber(this) /></td>
+	    					<td><input type="text" name="ibu5" class="option" charset="0123456789.," style="width: 50px" onChange=checkNumber(this) /></td>
+	    				</tr>
+	    			</table>
+					<p><nobr><input class="data" type="text" value="" name="hydrometer" placeholder="Ej: 1.060 o 1060" onkeypress="if (event.keyCode == 13) calcBitter();"/> Lectura densidad inicial.</nobr> </p>
+					<p><nobr><input class="data" type="text" value="" name="volume" placeholder="Ej: 20" onkeypress="if (event.keyCode == 13) calcBitter();"/> Volumen en litros.</nobr> </p>
+	    		</form>
+	    		
+
+				<table class="result">
+					<tr>
+						<td>IBUs totales: </td>
+						<td class="value" id="bitterResult"></td>
+					</tr>
+				</table>
+			
+				<input class="data" type="button" value="Calcular" onclick="calcBitter();"/>
+				<input class="data" type="button" value="Limpiar" onclick="clearCalcBitter();" />
+			</div>
+    	</fieldset>
+		</ons-scroller>
+</ons-page>
+    </body>
+</html>

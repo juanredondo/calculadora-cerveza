@@ -1,0 +1,40 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+    <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/densimetro.js"></script> 
+    </head>
+    <body>
+	<ons-page class="center">
+  <ons-scroller class="center">
+    	<!-- CORRECCION DENSIDAD -->
+		<fieldset id="hydrometerToolLink">
+    		<legend>Correción Densimetro</legend>
+	        <p>El valor obtenido es una aproximación, pero bastante exacto para nuestros propositos, 
+	        	comparado con los valores que se obtienen en programas como el BeerSmith solo se encuentra 
+	        	variaciones de un punto arriba / abajo en algunos calculos, otros dan el mismo valor
+    		<div class="values">
+				<form name="hydrometerTool">
+					<p><nobr><input type="text" name="hydrometer" placeholder="Ej: 1.016 o 1016" onkeypress="if (event.keyCode == 13) hydrometerCorrection();"/> Lectura densidad</nobr> </p>
+					<p><nobr><input type="text" name="temp" placeholder="Ej: 67" onkeypress="if (event.keyCode == 13) hydrometerCorrection();"/> Temperatura (ºC)</nobr> </p>
+					<p><nobr><input type="text" name="cTemp" placeHolder="Ej: 20" value="20" onkeypress="if (event.keyCode == 13) hydrometerCorrection();"/> Temperatura ajuste densimetro (ºC)</nobr> </p>
+				</form>
+	
+
+				<table class="result">
+					<tr>
+						<td>La densidad corregida es: </td>
+						<td class="value" id="hydrometerCorrectionValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="hydrometerCorrection();"/>
+				<input type="button" value="Limpiar" onclick="hydrometerCorrectionClear();" />
+			</div>
+			
+		</fieldset>
+		    
+</ons-scroller>
+</ons-page>
+    </body>
+</html>

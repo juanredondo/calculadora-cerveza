@@ -1,0 +1,152 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+   <head>
+		<title>Calculadora Elaboración Cerveza</title>
+		<script src="js/carbonatacion.js"></script>
+   </head>
+    <body>
+	<ons-page class="center">
+ <ons-scroller class="center">
+		<!-- PRIMING-->
+		<fieldset id="primingToolLink">
+			<legend>Carbonatación</legend>
+		    <p>En el cálculo se tiene en cuenta los volúmenes de CO2 residuales que contiene la cerveza una vez terminada la fermentación y dada su temperatura.</p>
+			<div class="values">
+				<form name="primingTool">
+					
+					<p class="nowrap">
+						 <SELECT>
+							  <OPTION>American Amber Ale: 2.2-2.8 </OPTION>
+							  <OPTION>American Brown: 1.5-2.5 </OPTION>
+							  <OPTION>American Lager: 2.5-2.7 </OPTION>
+							  <OPTION>American Pale Ale: 2.2-2.8 </OPTION>
+							  <OPTION>American Pilsener: 2.6-2.7 </OPTION>
+							  <OPTION>American Wheat: 2.3-2.6 </OPTION>
+							  <OPTION>Bamberg Rauchbier: 2.2-2.6 </OPTION>
+							  <OPTION>Barley Wine: 1.3-2.3 </OPTION>
+							  <OPTION>Belgian Dubbel: 1.9-2.4 </OPTION>
+							  <OPTION>Belgian Fruit Lambic: 2.6-4.5 </OPTION>
+							  <OPTION>Belgian Lambic: 3.0-4.5 </OPTION>
+							  <OPTION>Belgian Ale: 1.9-2.5 </OPTION>
+							  <OPTION>Belgian Tripel: 1.9-2.4 </OPTION>
+							  <OPTION>Belgian White (Wit): 2.1-2.6 </OPTION>
+							  <OPTION>Berliner Weisse: 3.5 </OPTION>
+							  <OPTION>Bock: 2.2-2.7 </OPTION>
+							  <OPTION>Bohemian Pilsener: 2.3-2.5 </OPTION>
+							  <OPTION>California Common: 2.4-2.8 </OPTION>
+							  <OPTION>Cream Ale: 2.6-2.7 </OPTION>
+							  <OPTION>Doppelbock: 2.3-2.6 </OPTION>
+							  <OPTION>Dortmunder Export: 2.6 </OPTION>
+							  <OPTION>Dunkelweizen: 2.7-4.5 </OPTION>
+							  <OPTION>D&uuml;sseldorf Altbier: 2.2-3.1 </OPTION>
+							  <OPTION>Eisbock: 2.4 </OPTION>
+							  <OPTION>English Bitter: 0.8-1.3 </OPTION>
+							  <OPTION>English Brown: 1.5-2.3 </OPTION>
+							  <OPTION>English Mild: 1.3-2.0 </OPTION>
+							  <OPTION>English Old/Strong Ale: 1.5-2.3 </OPTION>
+							  <OPTION>English Pale Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Flanders Brown: 1.9-2.5 </OPTION>
+							  <OPTION>Foreign-Style Stout: 2.3-2.6 </OPTION>
+							  <OPTION>German Pilsener: 2.5 </OPTION>
+							  <OPTION>Helles Bock: 2.2-2.7 </OPTION>
+							  <OPTION>Imperial Stout: 1.5-2.3 </OPTION>
+							  <OPTION>India Pale Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Irish Dry Stout: 1.6-2.0 </OPTION>
+							  <OPTION>K&ouml;lsch: 2.4-2.7 </OPTION>
+							  <OPTION>Maibock: 2.2-2.7 </OPTION>
+							  <OPTION>M&auml;rzen/Oktoberfest: 2.6-2.7 </OPTION>
+							  <OPTION>M&uuml;nchner Helles: 2.3-2.7 </OPTION>
+							  <OPTION>Munich Dunkel: 2.2-2.7 </OPTION>
+							  <OPTION>Oatmeal Stout: ? </OPTION>
+							  <OPTION>Oud Bruin: 1.9-2.5 </OPTION>
+							  <OPTION>Porter: 1.7-2.5 </OPTION>
+							  <OPTION>Schwarzbier: 2.2-2.6 </OPTION>
+							  <OPTION>Scottish Ale: 0.8-1.3 </OPTION>
+							  <OPTION>Strong Scotch Ale: 1.5-2.3 </OPTION>
+							  <OPTION>Sweet Stout: 2.0-2.4 </OPTION>
+							  <OPTION>Vienna: 2.4-2.6 </OPTION>
+							  <OPTION>Weizen/Weissbier: 2.7-4.5 </OPTION>
+							  <OPTION>Weizenbock: 2.7-4.7 </OPTION>
+						</SELECT>
+	                	Referencia de estilos.
+					</p>
+					
+					<p class="nowrap">
+						<select name="ingredient" id="ingredient">
+							<option value="sugar">Azúcar</option>
+							<option value="dextrose">Dextrosa</option>
+							<option value="dme">Extracto de malta en polvo</option>
+						</select>
+						Ingrediente para la carbonatación
+					</p>
+					<p class="nowrap"><input type="text" value="" name="volumeCO2" placeholder="Ej: 2.2"/> Volúmenes de CO2 deseados</p>
+					<p class="nowrap"><input type="text" value="" name="volume" placeholder="Ej: 20"/> Volumen en litros</p>
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 18"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Añadir: </td>
+						<td class="value" id="primingResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="primingCalc();"/>
+				<input type="button" value="Limpiar" onclick="primingCalcClear();" />
+			</div>
+		</fieldset>
+
+		<!-- CO2 Residual-->
+		<fieldset id="primingToolLink">
+			<legend>CO2 Residual al finalizar la fermentación</legend>
+			<div class="values">
+				<form name="residualTool">
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 18"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Volúmenes de CO2 residuales: </td>
+						<td class="value" id="residualResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="residualCacl();"/>
+				<input type="button" value="Limpiar" onclick="residualCalcClear();" />
+			</div>
+		</fieldset> 
+		
+		<!-- Volumenes de CO2-->
+		<fieldset id="primingToolLink">
+			<legend>Volúmenes de CO2</legend>
+			<p>Nos servirá tanto para conocer cuantos volúmenes de CO2 tiene nuestra cerveza conociendo presión y temperatura, como para conocer a que presión debe quedar la cerveza para conseguir unos volúmenes de CO2 estando a una temperatura.</p>
+			<div class="values">
+				<form name="volumesTool">
+					<p class="nowrap">
+						<input type="text" value="" name="valueInput" placeholder="Ej: 0.5" />
+						<select id="valueType" onchange="onChangeType()">
+							<option value="bar">Presión en bares</option>
+							<option value="volumes">Volúmenes de CO2 deseados</option>
+						</select>
+					</p>
+					<p class="nowrap"><input type="text" value="" name="temp" placeholder="Ej: 4"/> Temperatura de la cerveza (ºC)</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td id="volumesResultLabel">&nbsp;</td>
+						<td class="value" id="volumesResultValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="volumesCalc();"/>
+				<input type="button" value="Limpiar" onclick="volumesCalcClear();" />
+			</div>
+		</fieldset> 
+		</ons-scroller>
+		</ons-page>
+    </body>
+</html>

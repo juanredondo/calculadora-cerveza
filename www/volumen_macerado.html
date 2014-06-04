@@ -1,0 +1,37 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+	  <head>
+        
+        <title>Calculadora Elaboración Cerveza</title>
+				<script src="js/volumen_macerado.js"></script>
+ 
+    </head>
+    <body>
+	<ons-page class="center">
+  <ons-scroller class="center">
+		<!-- VOLUMEN DEL MACERADO -->
+		<fieldset id="mashVolToolLink">
+			<legend>Volumen macerado</legend>
+		    <p>Comprueba si tu macerador tiene tamaño suficiente para realizar el macerado. No se tiene en cuenta el espacio que pueda haber bajo tu falso fondo, si lo tienes.</p>
+			<div class="values">
+				<form name="mashVolTool">
+					<p><nobr><input type="text" name="weight" placeholder="Ej: 5" onkeypress="if (event.keyCode == 13) mashVolCalc();"/> Peso del grano en Kg</nobr></p>
+					<p><nobr><input type="text" name="thick" placeholder="Ej: 3" onkeypress="if (event.keyCode == 13) mashVolCalc();"/> Litros de agua por Kg de grano</nobr></p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>El macerado ocupara un volumen de:</td>
+						<td class="value" id="mashVolCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="mashVolCalc();"/>
+				<input type="button" value="Limpiar" onclick="mashVolCalcClear();" />
+			</div>
+		</fieldset> 
+			</ons-scroller>
+</ons-page>
+	</body>	
+</html>

@@ -1,0 +1,34 @@
+
+<ons-page class="center">
+  <ons-scroller class="center">
+
+	<!-- CONTENIDO EN ALCOHOL -->
+			<fieldset id="alcoholToolLink">
+			<legend>Contenido en Alcohol / Atenuación</legend>
+			<div class="values">
+				<form name="alcoholTool">
+					<p><nobr><input type="text" name="DO" placeholder="Ej: 1.042 o 1042" onkeypress="if (event.keyCode == 13) alcoholCalc();"/> Densidad inicial</nobr> </p>
+					<p><nobr><input type="text" name="DF" placeholder="Ej: 1.012 o 1012" onkeypress="if (event.keyCode == 13) alcoholCalc();"/> Densidad final</nobr> </p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Volumen de alcohol: </td>
+						<td class="value" id="alcoholCalcValue"></td>
+					</tr>
+					<tr>
+						<td>Atenuación: </td>
+						<td class="value" id="attenuationCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="alcoholCalc();"/>
+				<input type="button" value="Limpiar" onclick="alcoholCalcClear();" />
+						
+			</div>
+		</fieldset>
+</ons-scroller>
+</ons-page>
+
+

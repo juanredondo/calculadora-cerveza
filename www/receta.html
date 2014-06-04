@@ -1,0 +1,188 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<html>
+	<head>
+		<script TYPE="text/javascript" LANGUAGE="javascript" src="js/jquery.min.js"></script>
+		<script TYPE="text/javascript" LANGUAGE="javascript" src="js/receta.js"></script>
+		<title>Calculadora Receta</title>
+	</head>
+	<body onload="populateGrainSeleccion()">
+		<ons-page class="center">
+			<ons-scroller class="center">
+		<div id="fade" class="invisible"></div>
+
+		<!-- RECETA -->
+		<fieldset id="recipeToolLink">
+			<legend>
+				Receta
+			</legend>
+			<div class="values">
+
+				<form name="recipeTool">
+					<table id="grainTable"></table>
+					<p>
+						<nobr>
+							<input class="data" type="text" name="hydrometer" value="" placeholder="Ej: 1.041 o 1041"/>
+							Densidad inicial.
+						</nobr>
+					</p>
+					<p>
+						<nobr>
+							<input class="data option" type="text" name="volume" value="" placeholder="Ej: 20" />
+							Volumen inicial en litros.
+						</nobr>
+					</p>
+					<p>
+						<nobr>
+							<input class="data option" type="text" name="efficiency" value="" placeholder="Ej: 75" />
+							Rendimiento del equipo (%).
+						</nobr>
+					</p>
+					<p>
+						<nobr>
+							<input class="data" type="text" name="mash" value="" placeholder="Ej: 3" />
+							Relación de empaste para el macerado.
+						</nobr>
+					</p>
+					<p>
+						<nobr>
+							<input class="data" type="text" name="boilTime" value="" placeholder="Ej: 90" />
+							Tiempo de hervido (minutos)
+						</nobr>
+					</p>
+					<p>
+						<nobr>
+							<input class="data" type="text" name="boilEvap" value="" placeholder="Ej: 4" />
+							Perdida por evaporación en una hora (litros)
+						</nobr>
+					</p>
+
+				</form>
+
+				<input class="data" type="button" value="Calcular" onclick="recipeCalc();"/>
+				<input class="data" type="button" value="Limpiar" onclick="recipeCalcClear();" />
+				<a href="javascript:void(0)" onclick="setHelpVisible(true);">Ayuda</a>
+			</div>
+		</fieldset>
+
+		<div id="results" class="invisible">
+			<table class="results" id="maltResult"></table>
+
+			<b>Macerado</b>
+			<br/>
+			<hr/>
+			<table id="mashResult"></table>
+
+			<b>Olla hervido</b>
+			<br/>
+			<hr/>
+			<table id="boilResult"></table>
+
+			<b>Fermentador</b>
+			<br/>
+			<hr/>
+			<table id="ferResult"></table>
+			<p>
+				<nobr>
+					<input class="data" type="button" value="Cerrar" onclick="setResultsVisible(false);"/>
+					<input class="data" type="button" value="Copiar Texto" onclick="setFormTextVisible(true, 'textPlain');" />
+				</nobr>
+			</p>
+		</div>
+
+		<div id="help" class="invisible">
+			<p>
+				La calculadora de <b>Receta</b> esta orientado a las elaboraciones "todo grano" y permite realizar los siguiente cálculos:
+			</p>
+			<ul>
+				<li>
+					Cantidades de ingredientes.
+				</li>
+				<li>
+					Cantidad de agua para el macerado. &#185;
+				</li>
+				<li>
+					Volumen que ocupara el macerado. &#185;
+				</li>
+				<li>
+					Agua necesaria para el lavado. &#185;
+				</li>
+				<li>
+					Cantidad total de agua a usar. &#185;
+				</li>
+				<li>
+					Volumen del mosto en olla. &#178;
+				</li>
+				<li>
+					Densidad antes de hervir. &#178;
+				</li>
+				<li>
+					Volumen inicial. &#179;
+				</li>
+				<li>
+					Densidad inicial.
+				</li>
+			</ul>
+			<i> (1) Estos datos solo se mostrarán si se indica relación de empaste del macerado
+			<br/>
+			(2) Estos datos solo se mostrarán si se indica el dato de evaporación y el tiempo de hervido.</br>
+			(3) Aunque es un dato que se debe aportar para realizar el cálculo se muestra en el resumen de resultados.
+			<br/>
+			</i>
+			<p>
+				Deberemos conocer los siguientes datos de nuestro equipo:
+			</p>
+			<ul>
+				<li>
+					Rendimiento (%)
+				</li>
+			</ul>
+			<p>
+				Para el cálculo de la receta deberemos aportar:
+			</p>
+			<ul>
+				<li>
+					Ingredientes, expresados en porcentajes o pesos.
+				</li>
+				<li>
+					Volumen inicial que queremos obtener en el fermentador.
+				</li>
+				<li>
+					Densidad inicial. <i>Si no se indica se calculara.</i>
+				</li>
+			</ul>
+			<p>
+				Si para una relación de ingredientes indicamos solo pesos y no establecemos el valor de densidad inicial, entonces la densidad inicial
+				se calculara de acuerdo a los ingredientes, rendimiento del equipo y volumen inicial que queremos obtener.
+			</p>
+			<p>
+				Si indicamos pesos en los ingredientes y establecemos el valor de densidad inicial nos calculara el porcentaje de uso de cada uno de
+				los ingredientes y en el resultado final se indicaran los pesos de los ingredientes que debemos usar. Esto nos servirá para redimensionar
+				recetas que nos haya pasado con un volumen inicial distinto al que nosotros queremos obtener.
+			</p>
+			<p>
+				Si se indica el porcentaje de los ingredientes entonces es obligatorio indicar la densidad inicial, sera un dato obligatorio para
+				calcular el peso de cada ingrediente.
+			</p>
+			<p>
+				En la calculadora no se tienen en cuenta los falsos fondos, perdidas en magueras, etc.. Se recomiendo leer
+				el siguiente <a href="http://cerveceros-caseros.org/index.php/procesos/223-calculo-de-la-cantidad-de-agua">artículo</a>.
+			</p>
+			<input class="data" type="button" value="Cerrar" onclick="setHelpVisible(false);"/>
+		</div>
+
+		<div id="formtext" class="invisible">
+		
+			<p>
+				Pulse CTRL + C para copiar el texto.
+			</p>
+			<textarea id ="copytext">Esto es una prueba
+quiero probar la copia de texto
+a ver como va.
+      		</textarea>
+			<input class="data closebutton" type="button" value="Cerrar" onclick="setFormTextVisible(false);"/>
+
+		</div>
+	</ons-scroller>
+</ons-page>
+	</body>
+</html>

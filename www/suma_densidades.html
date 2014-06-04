@@ -1,0 +1,63 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+   <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/suma_densidades.js"></script>
+     </head>
+    <body>
+	<ons-page class="center">
+  <ons-scroller class="center">
+    	<!-- Suma de densidades -->
+    	<fieldset id="sumToolLink">
+    		<legend>Suma de mostos</legend>			
+    		<div class="values">
+	    		<form name="sumTool">
+	    			<table>
+	    				<tr>
+	    					<td></td>
+	    					<td>Volumen (litros)</td>
+	    					<td>Densidad</td>
+	    				</tr>
+	    				<tr>
+	    					<td>Mosto 1</td>
+	    					<td><input type="text" name="volume1" charset="0123456789.," placeholder="Ej: 20" value="" style="width: 50px" /></td>
+	    					<td><input type="text" name="density1" placeholder="Ej: 1060" charset="0123456789,." value="" style="width: 50px" /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Mosto 2</td>
+	    					<td><input type="text" name="volume2" charset="0123456789.," placeholder="Ej: 20" value="" style="width: 50px" /></td>
+	    					<td><input type="text" name="density2" placeholder="Ej: 1060" charset="0123456789,." value="" style="width: 50px"  /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Mosto 3</td>
+	    					<td><input type="text" name="volume3" charset="0123456789.," placeholder="Ej: 20" value="" style="width: 50px" /></td>
+	    					<td><input type="text" name="density3" placeholder="Ej: 1060" charset="0123456789,." value="" style="width: 50px" /></td>
+	    				</tr>
+	    				<tr>
+	    					<td>Mosto 4</td>
+	    					<td><input type="text" name="volume4" charset="0123456789.," placeholder="Ej: 20" value="" style="width: 50px"  /></td>
+	    					<td><input type="text" name="density4" placeholder="Ej: 1060" charset="0123456789,." value="" style="width: 50px"  /></td>
+	    				</tr>
+	    			</table>	    					    				
+	    		</form>
+	    		
+
+				<table class="result">
+					<tr>
+						<td>Volumen total: </td>
+						<td class="value" id="volumeResult"></td>
+					</tr>
+					<tr>
+						<td>Densidad total: </td>
+						<td class="value" id="densityResult"></td>
+					</tr>
+				</table>
+			
+				<input class="data" type="button" value="Calcular" onclick="calcSum();"/>
+				<input class="data" type="button" value="Limpiar" onclick="clearCalcSum();" />
+			</div>
+    	</fieldset>
+			</ons-scroller>
+</ons-page>
+    </body>
+</html>

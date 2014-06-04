@@ -1,0 +1,37 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+    <head>
+       
+        <title>Calculadora Elaboración Cerveza</title>
+				<script src="js/dilucion.js"></script>
+ 
+    </head>
+    <body>
+	<ons-page class="center">
+  <ons-scroller class="center">
+		<!-- DILUCION CON AGUA -->
+		<fieldset id="dilutionToolLink">
+			<legend>Cantidad de agua para diluir un mosto</legend>
+			<div class="values">
+				<form name="dilutionTool">
+					<p><input type="text" value="" name="DO" placeholder="Ej: 1.052 o 1052" onkeypress="if (event.keyCode == 13) dilutionCalc();"/> Densidad actual</p>
+					<p><input type="text" value="" name="volume" placeholder="Ej: 20" onkeypress="if (event.keyCode == 13) dilutionCalc();"/> Volumen en litros</p>
+					<p><input type="text" value="" name="DF" placeholder="Ej: 1.042 o 1042" onkeypress="if (event.keyCode == 13) dilutionCalc();"/> Densidad objetivo</p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td>Añadir agua: </td>
+						<td class="value" id="dilutionCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="dilutionCalc();"/>
+				<input type="button" value="Limpiar" onclick="dilutionCalcClear();" />
+			</div>
+		</fieldset> 
+		</ons-scroller>
+</ons-page>
+    </body>
+</html>

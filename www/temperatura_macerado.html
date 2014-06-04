@@ -1,0 +1,36 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<html>
+   <head>
+        <title>Calculadora Elaboración Cerveza</title>
+		<script src="js/temperatura_macerado.js"></script>
+    </head>
+    <body>
+		    <ons-page class="center">
+  <ons-scroller class="center">
+		<!-- TEMPERATURA DE AGUA PARA EL MACERADO -->
+		<fieldset id="strikeToolLink">
+			<legend>Temperatura del agua para el macerado</legend>
+			<div class="values">
+				<form name="strikeTool">
+					<p><nobr><input type="text" name="thick" placeholder="Ej: 3" onkeypress="if (event.keyCode == 13) strikeCalc();"/> Litros de agua por Kg de grano</nobr></p>
+					<p><nobr><input type="text" name="strtemp" placeholder="Ej: 67" onkeypress="if (event.keyCode == 13) strikeCalc();"/> Temperatura objetivo del macerado</nobr></p>
+					<p><nobr><input type="text" name="grntemp" placeHolder="Ej: 18" onkeypress="if (event.keyCode == 13) strikeCalc();"/> Temperatura del grano</nobr></p>
+				</form>
+				
+
+				<table class="result">
+					<tr>
+						<td><nobr>La temperatura del agua tiene que ser de:  </nobr></td>
+						<td class="value" id="strikeCalcValue"></td>
+					</tr>
+				</table>
+			
+				<input type="button" value="Calcular" onclick="strikeCalc();"/>
+				<input type="button" value="Limpiar" onclick="strikeCalcClear();" />
+			</div>
+			
+		</fieldset> 
+	</ons-scroller>
+</ons-page>
+    </body>
+</html>
