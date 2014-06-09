@@ -1,15 +1,29 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Calculadora Elaboración Cerveza</title>
-		<script src="js/densimetro.js"></script> 
-    </head>
-    <body>
-	<ons-page>
-  <ons-scroller>
-    	<!-- CORRECCION DENSIDAD -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculadora Cerveza</title>
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css">
+    <link rel="stylesheet" href="css/jqm-demos.css">
+	<link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<script src="js/jquery.js"></script>
+    <script src="lib/index.js"></script>
+    <script src="js/jquery.mobile-1.4.2.min.js"></script>
+	<script src="js/densimetro.js"></script>
+</head>
+<body>
+<div data-role="page" class="jqm-demos ui-responsive-panel" id="panel-responsive-page1" data-title="Panel responsive page" data-url="panel-responsive-page1">
+
+    <div data-role="header">
+        <h1>Corrección Densímetro</h1>
+        <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+    </div><!-- /header -->
+    <div role="main" class="ui-content jqm-content jqm-fullwidth">
+   <!-- CORRECCION DENSIDAD -->
 		<fieldset id="hydrometerToolLink">
-    		<legend>Correción Densimetro</legend>
+    		<legend>Correción Densímetro</legend>
 	        <p>El valor obtenido es una aproximación, pero bastante exacto para nuestros propositos, 
 	        	comparado con los valores que se obtienen en programas como el BeerSmith solo se encuentra 
 	        	variaciones de un punto arriba / abajo en algunos calculos, otros dan el mismo valor
@@ -32,9 +46,29 @@
 				<input type="button" value="Limpiar" onclick="hydrometerCorrectionClear();" />
 			</div>
 			
-		</fieldset>
-		    
-</ons-scroller>
-</ons-page>
-    </body>
+		</fieldset> </div><!-- /content -->
+     <div data-role="panel" data-display="push" data-theme="b" id="nav-panel">
+        <ul data-role="listview">
+            <li data-icon="delete"><a href="#" data-rel="close">Cerrar</a></li>
+                <li><a href="alcohol.html">Alcohol</a></li>
+                <li><a href="ajuste_densidad.html">Ajuste Densidad</a></li>
+                <li><a href="azucar.html">Azucar</a></li>
+                <li><a href="carbonatacion.html">Carbonatación</a></li>
+                <li><a href="densimetro.html">Densímetro</a></li>
+                <li><a href="dilucion.html">Dilución</a></li>
+                <li><a href="evaporacion.html">Evaporación</a></li>
+                <li><a href="grados_plato.html">Grados Plato</a></li>
+                <li><a href="ibus.html">IBUs</a></li>
+                <li><a href="receta.html">Receta</a></li>
+                <li><a href="rendimiento.html">Rendimiento</a></li>
+                <li><a href="suma_densidades.html">Suma Densidades</a></li>
+                <li><a href="temperatura_escalon.html">Temperatura Escalón</a></li>
+                <li><a href="temperatura_macerado.html">Temperatura Macerado</a></li>
+				<li><a href="volumen_macerado.html">Volumen Macerado</a></li>
+        </ul>
+    </div><!-- /panel -->
+   
+</div>
+</body>
 </html>
+
