@@ -387,6 +387,7 @@
 		padding-left: 15%;
 		padding-right: 15%;
 		float: none;
+		overflow:visible !important;
 	}
 	.jqm-navmenu-panel .ui-listview .ui-btn {
 		padding-left: 12.5%;
